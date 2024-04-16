@@ -148,6 +148,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in ignrd_attrs:
                 setattr(new_instance,key,params[key])
         new_instance.save()
+        print(new_instance.id)
 
 
     def help_create(self):
