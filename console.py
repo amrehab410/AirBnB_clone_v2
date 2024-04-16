@@ -136,7 +136,6 @@ class HBNBCommand(cmd.Cmd):
                 continue
             params[param[0]] = param[1]
 
-        print("Parameters of the Instance: ",params)
         if not split_args:
             print("** class name missing **")
             return
@@ -144,7 +143,6 @@ class HBNBCommand(cmd.Cmd):
             print(args)
             print("** class doesn't exist **")
             return
-        print("Last arg:",args)
 
         new_instance = HBNBCommand.classes[className]()
         for key in params:
