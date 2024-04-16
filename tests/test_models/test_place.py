@@ -2,7 +2,11 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
-
+import unittest
+from models.engine.file_storage import FileStorage
+import os
+from models import storage
+from models.base_model import BaseModel
 
 class test_Place(test_basemodel):
     """ """
@@ -67,3 +71,34 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+
+class TestPlace(unittest.TestCase):
+
+    """Test Cases for the Place class."""
+
+    def resetStorage(self):
+        """Resets FileStorage data."""
+        FileStorage._FileStorage__objects = {}
+        if os.path.isfile(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
+
+    def test_place_init(self):
+        """Tests instantiation of Place class."""
+
+        b = Place()
+        self.assertEqual(str(type(b)), "<class 'models.place.Place'>")
+        self.assertIsInstance(b, Place)
+        self.assertTrue(issubclass(type(b), BaseModel))
+
+    def test_place_attr(self):
+        """Tests the attributes of Place class."""
+        attributes = storage.attributes()["Place"]
+        o = Place()
+        for k, v in attributes.items():
+            self.assertTrue(hasattr(o, k))
+            self.assertEqual(type(getattr(o, k, None)), v)
+
+
+if __name__ == "__main__":
+    unittest.main()
