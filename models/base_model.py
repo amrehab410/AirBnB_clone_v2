@@ -44,6 +44,7 @@ class BaseModel:
         dictionary['updated_at'] = self.updated_at.isoformat()
         return dictionary
 
+
 class TestBaseModel(unittest.TestCase):
 
     """Test Cases for the BaseModel class."""
