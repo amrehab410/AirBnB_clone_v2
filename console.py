@@ -136,22 +136,19 @@ class HBNBCommand(cmd.Cmd):
                 continue
             params[param[0]] = param[1]
 
-        print("Parameters of the Instance: ",params)
         if not split_args:
             print("** class name missing **")
             return
         elif className not in HBNBCommand.classes:
-            print(args)
             print("** class doesn't exist **")
             return
-        print("Last arg:",args)
 
         new_instance = HBNBCommand.classes[className]()
         for key in params:
             if key not in ignrd_attrs:
                 setattr(new_instance,key,params[key])
         new_instance.save()
-        print(new_instance.id)
+
 
     def help_create(self):
         """ Help information for the create method """
