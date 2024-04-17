@@ -47,7 +47,6 @@ class DBStorage:
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        print(obj)
         self.__session.add(obj)
 
     def save(self):
@@ -63,7 +62,6 @@ class DBStorage:
     def reload(self):
         """Loads storage dictionary from file"""
         Base.metadata.create_all(self.__engine)
-        print("TABLESSSSSSSSSSS CREATED")
         session_factory = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
