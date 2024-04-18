@@ -37,24 +37,23 @@ class Place(BaseModel, Base):
         "Review", cascade='all, delete, delete-orphan', backref="place")
     amenities = relationship('Amenity', secondary=place_amenity, back_populates="place")
 
-    if os.getenv('HBNB_TYPE_STORAGE') != "db":
-        @property
-        def reviews(self):
-            """ reviews getter attribute """
-            rev_lis = []
-            all_rev = models.storage.all(Review)
-            for review in all_rev.values():
-                if review.state_id == self.id:
-                    rev_lis.append(review)
-            return rev_lis
+    @property
+    def reviews(self):
+        """ reviews getter attribute """
+        rev_lis = []
+        all_rev = models.storage.all(Review)
+        for review in all_rev.values():
+            if review.state_id == self.id:
+                rev_lis.append(review)
+        return rev_lis
 
-        @property
-        def amenities(self):
-            """ amenities getter attribute """
-            return self.amenity_ids
-        
-        @amenities.setter
-        def amenities(self, obj=None):
-            """ Appends amenity ids to the attribute """
-            if type(obj) is Amenity and obj.id not in self.amenity_ids:
-                self.amenity_ids.append(obj.id)
+    @property
+    def amenities(self):
+        """ amenities getter attribute """
+        return self.amenity_ids
+    
+    @amenities.setter
+    def amenities(self, obj=None):
+        """ Appends amenity ids to the attribute """
+        if type(obj) is Amenity and obj.id not in self.amenity_ids:
+            self.amenity_ids.append(obj.id)
