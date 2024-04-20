@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
-import sys
+from datetime import datetime
 import re
+import os
+import sys
+import uuid
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -127,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
             param = args.split("=")
             ignrd_attrs = ["id", "created_at", "updated_at", "__class__"]
             if re.match(string_pattern, param[1]):
-                param[1] = param[1].strip('"')
+                param[1] = param[1].strip('"').replace('_', ' ')
             elif re.match(int_pattern, param[1]):
                 param[1] = int(param[1])
             elif re.match(float_pattern, param[1]):
@@ -142,11 +145,22 @@ class HBNBCommand(cmd.Cmd):
         elif className not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        new_instance = HBNBCommand.classes[className]()
-        for key in params:
-            if key not in ignrd_attrs:
-                setattr(new_instance, key, params[key])
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            if not hasattr(params, 'id'):
+                params['id'] = str(uuid.uuid4())
+            if not hasattr(params, 'created_at'):
+                params['created_at'] = str(datetime.now())
+            if not hasattr(params, 'updated_at'):
+                params['updated_at'] = str(datetime.now())
+            new_instance = HBNBCommand.classes[className](**params)
+            new_instance.save()
+            print(new_instance.id)
+        else:
+            new_instance = HBNBCommand.classes[className]()
+            if params:
+                for key in params:
+                    if key not in ignrd_attrs:
+                        setattr(new_instance, key, params[key])
         new_instance.save()
         print(new_instance.id)
 
