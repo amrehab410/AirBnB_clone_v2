@@ -61,18 +61,22 @@ def exec_command(my_console, the_command, last_lines = 1):
 """
  Tests
 """
-result = exec_command(my_console, "all User", 4)
+result = exec_command(my_console, "all Review", 6)
 if result is None or result == "":
-    print("FAIL: No users retrieved")
-if "my_id_0" not in result or "email0@gmail.com" not in result or "pwd0" not in result or "John" not in result or "Doe" not in result:
+    print("FAIL: No reviews retrieved")
+if "my_id_r_0" not in result or "my_id_p_0" not in result or "my_id_u_2" not in result or "Cool" not in result:
     print("FAIL: Missing information 0")
-if "my_id_1" not in result or "email1@gmail.com" not in result or "pwd1" not in result or "Bob" not in result:
+if "my_id_r_1" not in result or "my_id_p_0" not in result or "my_id_u_3" not in result or "Amazing house" not in result:
     print("FAIL: Missing information 1")
-if "my_id_2" not in result or "email2@gmail.com" not in result or "pwd2" not in result or "Did" not in result:
+if "my_id_r_2" not in result or "my_id_p_1" not in result or "my_id_u_2" not in result or "Cool" not in result:
     print("FAIL: Missing information 2")
-if "my_id_3" not in result or "email3@gmail.com" not in result or "pwd3" not in result:
-    print("FAIL: Missing information 3")
-    
+if "my_id_r_3" not in result or "my_id_p_3" not in result or "my_id_u_3" not in result or "Bad place" not in result:
+    print("FAIL: Missing information 3") 
+if "my_id_r_4" not in result or "my_id_p_3" not in result or "my_id_u_1" not in result or "Ok" not in result:
+    print("FAIL: Missing information 4") 
+if "my_id_r_5" not in result or "my_id_p_3" not in result or "my_id_u_2" not in result or "Super cool" not in result:
+    print("FAIL: Missing information 5") 
+
 print("OK", end="")
 
 shutil.copy("tmp_console_main.py", "console.py")
