@@ -130,7 +130,7 @@ class HBNBCommand(cmd.Cmd):
             param = args.split("=")
             ignrd_attrs = ["id", "created_at", "updated_at", "__class__"]
             if re.match(string_pattern, param[1]):
-                param[1] = param[1].strip('"')
+                param[1] = param[1].strip('"').replace('_', ' ')
             elif re.match(int_pattern, param[1]):
                 param[1] = int(param[1])
             elif re.match(float_pattern, param[1]):
