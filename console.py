@@ -119,22 +119,37 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        try:
-            if not args:
-                raise SyntaxError()
-            arg_list = args.split(" ")
-            kw = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = arg_splited[1]
-        except SyntaxError:
+        params = {}
+        split_args = args.split(" ")
+        className = split_args[0]
+        split_args = split_args[1:]
+        string_pattern = r'^".*?"$'
+        int_pattern = r'^\d+$'
+        float_pattern = r'[+-]?([0-9]*[.])?[0-9]+'
+        for args in split_args:
+            param = args.split("=")
+            ignrd_attrs = ["id", "created_at", "updated_at", "__class__"]
+            if re.match(string_pattern, param[1]):
+                param[1] = param[1].strip('"')
+            elif re.match(int_pattern, param[1]):
+                param[1] = int(param[1])
+            elif re.match(float_pattern, param[1]):
+                param[1] = float(param[1])
+            else:
+                continue
+            params[param[0]] = param[1]
+
+        if not className:
             print("** class name missing **")
-        except NameError:
+            return
+        elif className not in HBNBCommand.classes:
             print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+            return
+        new_instance = HBNBCommand.classes[className]()
+        if params:
+            for key in params:
+                if key not in ignrd_attrs:
+                    setattr(new_instance, key, params[key])
         new_instance.save()
         print(new_instance.id)
 
