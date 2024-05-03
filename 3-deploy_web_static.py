@@ -10,14 +10,8 @@ from fabric.api import run
 env.hosts = ["34.229.184.216", "54.237.102.129"]
 
 
-archive_file = None
-
 def do_pack():
     """Create a tar gzipped archive of the directory web_static."""
-    global archive_file
-    if archive_file:
-        return archive_file
-
     dt = datetime.utcnow()
     file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
                                                          dt.month,
@@ -30,8 +24,6 @@ def do_pack():
             return None
     if local("tar -cvzf {} web_static".format(file)).failed is True:
         return None
-    
-    archive_file = file
     return file
 
 
